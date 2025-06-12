@@ -39,5 +39,3 @@ jobs:
           TAG: ${{ steps.tags.outputs.tag }}
           TAG_LATEST: true
           DOCKERFILE: ./argo-argoexec/Dockerfile.ODH
-
-
