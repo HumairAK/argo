@@ -1,0 +1,43 @@
+name: Build images for Main branch
+on:
+  push:
+    branches:
+      - main
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+env:
+  ARGO_WF_IMAGE_REPO: ds-pipelines-argo-workflowcontroller
+  ARGO_EXEC_IMAGE_REPO: ds-pipelines-argo-argoexec
+  QUAY_ORG: hukhan
+  QUAY_ID: ${{ secrets.QUAY_USERNAME }}
+  QUAY_TOKEN: ${{ secrets.QUAY_PASSWORD }}
+  SOURCE_BRANCH: main
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Generate Tag
+        shell: bash
+        id: tags
+        run: |
+          commit_sha=${{ github.event.after }}
+          tag=main-${commit_sha:0:7}
+          echo "tag=${tag}" >> $GITHUB_OUTPUT
+      - name: Build and Tag Argo Workflow Controller Image
+        uses: ./.github/actions/build_and_tag
+        env:
+          IMAGE_REPO: ${{ env.ARGO_WF_IMAGE_REPO }}
+          TAG: ${{ steps.tags.outputs.tag }}
+          TAG_LATEST: true
+          DOCKERFILE: ./argo-workflowcontroller/Dockerfile.ODH
+      - name: Build and Tag Argo Workflow Exec Image
+        uses: ./.github/actions/build_and_tag
+        env:
+          IMAGE_REPO: ${{ env.ARGO_EXEC_IMAGE_REPO }}
+          TAG: ${{ steps.tags.outputs.tag }}
+          TAG_LATEST: true
+          DOCKERFILE: ./argo-argoexec/Dockerfile.ODH
+
+
