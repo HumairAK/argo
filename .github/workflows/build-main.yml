@@ -1,4 +1,4 @@
-name: Build images for Main branch1
+name: Build images for Main branch
 on:
   push:
     branches:
