@@ -29,13 +29,15 @@ jobs:
         uses: ./.github/actions/build_and_tag
         env:
           IMAGE_REPO: ${{ env.ARGO_WF_IMAGE_REPO }}
+          DOCKERFILE: ./argo-workflowcontroller/Dockerfile.ODH
+        with:
           TAG: ${{ steps.tags.outputs.tag }}
           TAG_LATEST: true
-          DOCKERFILE: ./argo-workflowcontroller/Dockerfile.ODH
       - name: Build and Tag Argo Workflow Exec Image
         uses: ./.github/actions/build_and_tag
         env:
           IMAGE_REPO: ${{ env.ARGO_EXEC_IMAGE_REPO }}
+          DOCKERFILE: ./argo-argoexec/Dockerfile.ODH
+        with:
           TAG: ${{ steps.tags.outputs.tag }}
           TAG_LATEST: true
-          DOCKERFILE: ./argo-argoexec/Dockerfile.ODH
