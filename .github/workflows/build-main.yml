@@ -1,4 +1,4 @@
-name: Build images for Main branch
+name: Build images
 on:
   workflow_dispatch:
     inputs:
