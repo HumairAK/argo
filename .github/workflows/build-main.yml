@@ -2,14 +2,6 @@ name: Build images for Main branch
 on:
   workflow_dispatch:
     inputs:
-      ARGO_WF_IMAGE_REPO:
-        default: ds-pipelines-argo-workflowcontroller
-        description: "Argo workflow controller image repo"
-        required: true
-      ARGO_EXEC_IMAGE_REPO:
-        default: ds-pipelines-argo-argoexec
-        description: "Argo exec imag repo"
-        required: true
       QUAY_ORG:
         default: hukhan
         description: "Quary Org to push images to"
@@ -28,12 +20,12 @@ concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
 env:
-  ARGO_WF_IMAGE_REPO: ${{ inputs.ARGO_WF_IMAGE_REPO }}
-  ARGO_EXEC_IMAGE_REPO: ${{ inputs.ARGO_EXEC_IMAGE_REPO }}
-  QUAY_ORG: ${{ inputs.hukhan }}
+  ARGO_WF_IMAGE_REPO: ds-pipelines-argo-workflowcontroller
+  ARGO_EXEC_IMAGE_REPO: ds-pipelines-argo-argoexec
+  SOURCE_BRANCH: ${{ inputs.SOURCE_BRANCH || 'main' }}
+  QUAY_ORG: ${{ inputs.QUAY_ORG || 'hukhan' }}
   QUAY_ID: ${{ secrets.QUAY_USERNAME }}
   QUAY_TOKEN: ${{ secrets.QUAY_PASSWORD }}
-  SOURCE_BRANCH: ${{ inputs.SOURCE_BRANCH }}
 jobs:
   build-image:
     runs-on: ubuntu-latest
