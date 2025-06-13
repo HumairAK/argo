@@ -14,10 +14,6 @@ on:
       TAG:
         description: "Image Tag"
         required: true
-      TAG_LATEST:
-        description: "Set latest and main tags to provided tag."
-        default: false
-        required: true
   push:
     branches:
       - master # TODO: switch to main
@@ -59,11 +55,12 @@ jobs:
           commit_sha=${{ github.event.after }}
           tag=main-${commit_sha:0:7}
           echo "tag=${tag}" >> $GITHUB_OUTPUT
+      
       - name: Build and Tag Argo Workflow Exec Image
         uses: ./.github/actions/build_and_tag
         env:
           IMAGE_REPO: ${{ matrix.image }}
         with:
           TAG: ${{ steps.tags.outputs.tag  || inputs.TAG}}
-          TAG_LATEST: ${{ inputs.TAG_LATEST || 'true'}}
+          TAG_LATEST: ${{ github.event_name == 'push' }}
           DOCKERFILE: ${{ matrix.dockerfile }}
