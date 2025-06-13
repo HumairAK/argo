@@ -3,6 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       QUAY_ORG:
+        # TODO: switch to opendatahub
         default: hukhan
         description: "Quary Org to push images to"
         required: true
@@ -15,12 +16,12 @@ on:
         required: true
   push:
     branches:
-      - master
+      - master # TODO: switch to main
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
 env:
-  SOURCE_BRANCH: ${{ inputs.SOURCE_BRANCH || 'main' }}
+  SOURCE_BRANCH: ${{ inputs.SOURCE_BRANCH || 'master' }} # TODO: switch to main
   QUAY_ORG: ${{ inputs.QUAY_ORG || 'hukhan' }}
   QUAY_ID: ${{ secrets.QUAY_USERNAME }}
   QUAY_TOKEN: ${{ secrets.QUAY_PASSWORD }}
