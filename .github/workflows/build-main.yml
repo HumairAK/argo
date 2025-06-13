@@ -20,8 +20,6 @@ concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
 env:
-  ARGO_WF_IMAGE_REPO: ds-pipelines-argo-workflowcontroller
-  ARGO_EXEC_IMAGE_REPO: ds-pipelines-argo-argoexec
   SOURCE_BRANCH: ${{ inputs.SOURCE_BRANCH || 'main' }}
   QUAY_ORG: ${{ inputs.QUAY_ORG || 'hukhan' }}
   QUAY_ID: ${{ secrets.QUAY_USERNAME }}
@@ -36,9 +34,9 @@ jobs:
       fail-fast: ${{ inputs.fail_fast == 'true' }}
       matrix:
         include:
-          - image: ${{ env.ARGO_WF_IMAGE_REPO }}
+          - image: ds-pipelines-argo-workflowcontroller
             dockerfile: ./argo-workflowcontroller/Dockerfile.ODH
-          - image: ${{ env.ARGO_EXEC_IMAGE_REPO }}
+          - image: ds-pipelines-argo-argoexec
             dockerfile: ./argo-argoexec/Dockerfile.ODH
     steps:
       - uses: actions/checkout@v3
