@@ -21,8 +21,8 @@ jobs:
       - name: Login to Quay.io
         uses: redhat-actions/podman-login@v1
         with:
-          username: ${{ env.RH_REGISTRY_ID }}
-          password: ${{ env.RH_REGISTRY_TOKEN }}
+          username: ${{ secrets.RH_REGISTRY_ID }}
+          password: ${{ secrets.RH_REGISTRY_TOKEN }}
           registry: quay.io
       - name: Generate Tag
         shell: bash
