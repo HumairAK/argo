@@ -18,6 +18,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Login to Quay.io
+        uses: redhat-actions/podman-login@v1
+        with:
+          username: ${{ env.RH_REGISTRY_ID }}
+          password: ${{ env.RH_REGISTRY_TOKEN }}
+          registry: quay.io
       - name: Generate Tag
         shell: bash
         id: tags
