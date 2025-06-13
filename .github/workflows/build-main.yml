@@ -14,6 +14,9 @@ on:
       TAG:
         description: "Image Tag"
         required: true
+      TAG_LATEST:
+        description: "Set latest and main tags to provided tag."
+        required: false
   push:
     branches:
       - master # TODO: switch to main
@@ -61,5 +64,5 @@ jobs:
           IMAGE_REPO: ${{ matrix.image }}
         with:
           TAG: ${{ steps.tags.outputs.tag  || inputs.TAG}}
-          TAG_LATEST: true
+          TAG_LATEST: ${{ inputs.TAG_LATEST || 'true'}}
           DOCKERFILE: ${{ matrix.dockerfile }}
