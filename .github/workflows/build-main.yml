@@ -28,7 +28,18 @@ env:
   QUAY_TOKEN: ${{ secrets.QUAY_PASSWORD }}
 jobs:
   build-image:
+    continue-on-error: false
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: ${{ inputs.fail_fast == 'true' }}
+      matrix:
+        include:
+          - image: ${{ env.ARGO_WF_IMAGE_REPO }}
+            dockerfile: ./argo-workflowcontroller/Dockerfile.ODH
+          - image: ${{ env.ARGO_EXEC_IMAGE_REPO }}
+            dockerfile: ./argo-argoexec/Dockerfile.ODH
     steps:
       - uses: actions/checkout@v3
       - name: Login to Quay.io
@@ -45,19 +56,11 @@ jobs:
           commit_sha=${{ github.event.after }}
           tag=main-${commit_sha:0:7}
           echo "tag=${tag}" >> $GITHUB_OUTPUT
-      - name: Build and Tag Argo Workflow Controller Image
-        uses: ./.github/actions/build_and_tag
-        env:
-          IMAGE_REPO: ${{ env.ARGO_WF_IMAGE_REPO }}
-        with:
-          TAG: ${{ steps.tags.outputs.tag || inputs.TAG }}
-          TAG_LATEST: true
-          DOCKERFILE: ./argo-workflowcontroller/Dockerfile.ODH
       - name: Build and Tag Argo Workflow Exec Image
         uses: ./.github/actions/build_and_tag
         env:
-          IMAGE_REPO: ${{ env.ARGO_EXEC_IMAGE_REPO }}
+          IMAGE_REPO: ${{ matrix.image }}
         with:
           TAG: ${{ steps.tags.outputs.tag  || inputs.TAG}}
           TAG_LATEST: true
-          DOCKERFILE: ./argo-argoexec/Dockerfile.ODH
+          DOCKERFILE: ${{ matrix.dockerfile }}
