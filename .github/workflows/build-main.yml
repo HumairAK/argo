@@ -16,7 +16,8 @@ on:
         required: true
       TAG_LATEST:
         description: "Set latest and main tags to provided tag."
-        required: false
+        default: false
+        required: true
   push:
     branches:
       - master # TODO: switch to main
