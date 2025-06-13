@@ -13,9 +13,7 @@ on:
       TAG:
         description: "Image Tag"
         required: true
-  push:
-    branches:
-      - main
+
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
