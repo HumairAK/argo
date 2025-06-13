@@ -23,7 +23,7 @@ jobs:
         with:
           username: ${{ secrets.RH_REGISTRY_ID }}
           password: ${{ secrets.RH_REGISTRY_TOKEN }}
-          registry: quay.io
+          registry: registry.redhat.io
       - name: Generate Tag
         shell: bash
         id: tags
