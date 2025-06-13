@@ -1,18 +1,6 @@
 name: Build images
 on:
-  workflow_dispatch:
-    inputs:
-      QUAY_ORG:
-        default: hukhan
-        description: "Quary Org to push images to"
-        required: true
-      SOURCE_BRANCH:
-        default: main
-        description: "Source branch to build image from"
-        required: true
-      TAG:
-        description: "Image Tag"
-        required: true
+
   push:
     branches:
       - main
